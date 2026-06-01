@@ -131,13 +131,15 @@ def handle_keys(game_object):
                 game_object.next_direction = RIGHT
 
 
+# Инициализация Pygame
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+pygame.display.set_caption('Изгиб Питона')
+clock = pygame.time.Clock()
+
+
 def main():
     """Основной игровой цикл игры 'Изгиб Питона'."""
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-    pygame.display.set_caption('Изгиб Питона')
-    clock = pygame.time.Clock()
-
     snake = Snake()
     apple = Apple()
 
