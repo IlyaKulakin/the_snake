@@ -1,4 +1,5 @@
 import random
+
 import pygame
 
 SCREEN_WIDTH = 640
@@ -64,10 +65,10 @@ class Snake(GameObject):
         self.reset()
 
     def reset(self):
-        """Сбрасывает змейку в начальное состояние."""
+        """Сбрасывает змейку в начальное состояние после столкновения."""
         self.length = 1
-        self.positions = [self.position]
-        self.direction = RIGHT
+        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.next_direction = None
         self.last = None
 
@@ -82,12 +83,17 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Обновляет позицию змейки, включая обработку пересечения границ."""
+        """Обновляет позицию змейки, включая обработку пересечения границ и проверку столкновений."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
 
         new_x = (head_x + dx * GRID_SIZE) % SCREEN_WIDTH
         new_y = (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT
+
+        # Проверка на столкновение с собой
+        if (new_x, new_y) in self.positions[1:]:
+            self.reset()
+            return
 
         self.positions.insert(0, (new_x, new_y))
 
@@ -126,7 +132,7 @@ def handle_keys(game_object):
 
 
 def main():
-    """Основной игровой цикл."""
+    """Основной игровой цикл игры 'Изгиб Питона'."""
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
     pygame.display.set_caption('Изгиб Питона')
@@ -134,8 +140,6 @@ def main():
 
     snake = Snake()
     apple = Apple()
-
-    screen.fill(BOARD_BACKGROUND_COLOR)
 
     while True:
         clock.tick(20)
@@ -148,10 +152,7 @@ def main():
             snake.length += 1
             apple.randomize_position()
 
-        if snake.get_head_position() in snake.positions[1:]:
-            snake.reset()
-            screen.fill(BOARD_BACKGROUND_COLOR)
-
+        screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw(screen)
         snake.draw(screen)
 
