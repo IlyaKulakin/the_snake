@@ -83,7 +83,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Обновляет позицию змейки, включая обработку пересечения границ и проверку столкновений."""
+        """Обновляет позицию змейки с учетом границ и столкновений."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
 
